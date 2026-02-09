@@ -8,116 +8,159 @@ export default function Login() {
   const dispatch = useDispatch();
   const error = useSelector(selectError);
   const user = useSelector(selectLoggedInUser);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
+  const styles = {
+    page: {
+      minHeight: '100vh',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      background:
+        'linear-gradient(135deg, #667eea, #764ba2)',
+    },
+    card: {
+      width: '100%',
+      maxWidth: '420px',
+      background: 'rgba(255,255,255,0.95)',
+      borderRadius: '20px',
+      padding: '2.5rem',
+      boxShadow: '0 25px 50px rgba(0,0,0,0.2)',
+      animation: 'float 4s ease-in-out infinite',
+    },
+    title: {
+      textAlign: 'center',
+      fontSize: '1.8rem',
+      fontWeight: '700',
+      marginBottom: '1.5rem',
+      color: '#1f2937',
+    },
+    input: {
+      width: '100%',
+      padding: '10px 14px',
+      borderRadius: '10px',
+      border: '1px solid #d1d5db',
+      outline: 'none',
+      fontSize: '14px',
+      transition: 'all 0.3s',
+    },
+    button: {
+      width: '100%',
+      padding: '10px',
+      borderRadius: '12px',
+      background: 'linear-gradient(135deg, #667eea, #764ba2)',
+      color: '#fff',
+      fontWeight: '600',
+      border: 'none',
+      cursor: 'pointer',
+      marginTop: '10px',
+      transition: 'transform 0.2s, box-shadow 0.2s',
+    },
+    link: {
+      color: '#4f46e5',
+      fontWeight: '600',
+      textDecoration: 'none',
+    },
+    error: {
+      color: '#ef4444',
+      fontSize: '13px',
+      marginTop: '4px',
+    },
+    footer: {
+      marginTop: '1.5rem',
+      textAlign: 'center',
+      fontSize: '14px',
+    },
+  };
 
   return (
     <>
-      {user && <Navigate to="/" replace={true}></Navigate>}
-      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img
-            className="mx-auto h-10 w-auto"
-            src="/ecommerce.png"
-            alt="Your Company"
-          />
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Log in to your account
-          </h2>
-        </div>
+      {user && <Navigate to="/" replace={true} />}
 
-        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+      {/* Floating animation */}
+      <style>
+        {`
+          @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+          }
+          button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+          }
+          input:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 2px rgba(99,102,241,0.3);
+          }
+        `}
+      </style>
+
+      <div style={styles.page}>
+        <div style={styles.card}>
+          <h2 style={styles.title}>Welcome Back 👋</h2>
+
           <form
             noValidate
             onSubmit={handleSubmit((data) => {
               dispatch(
-                loginUserAsync({ email: data.email, password: data.password })
+                loginUserAsync({
+                  email: data.email,
+                  password: data.password,
+                })
               );
             })}
-            className="space-y-6"
           >
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Email address
-              </label>
-              <div className="mt-2">
-                <input
-                  id="email"
-                  {...register('email', {
-                    required: 'email is required',
-                    pattern: {
-                      value: /\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/gi,
-                      message: 'email not valid',
-                    },
-                  })}
-                  type="email"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-                {errors.email && (
-                  <p className="text-red-500">{errors.email.message}</p>
-                )}
-              </div>
+            {/* Email */}
+            <div style={{ marginBottom: '1rem' }}>
+              <input
+                type="email"
+                placeholder="Email address"
+                style={styles.input}
+                {...register('email', {
+                  required: 'Email is required',
+                })}
+              />
+              {errors.email && (
+                <p style={styles.error}>{errors.email.message}</p>
+              )}
             </div>
 
-            <div>
-              <div className="flex items-center justify-between">
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Password
-                </label>
-                <div className="text-sm">
-                  <Link
-                    to="/forgot-password"
-                    className="font-semibold text-indigo-600 hover:text-indigo-500"
-                  >
-                    Forgot password?
-                  </Link>
-                </div>
-              </div>
-              <div className="mt-2">
-                <input
-                  id="password"
-                  {...register('password', {
-                    required: 'password is required',
-                  })}
-                  type="password"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-                {errors.password && (
-                  <p className="text-red-500">{errors.password.message}</p>
-                )}
-              </div>
-              {error && <p className="text-red-500">{error || error.message}</p>}
+            {/* Password */}
+            <div style={{ marginBottom: '1rem' }}>
+              <input
+                type="password"
+                placeholder="Password"
+                style={styles.input}
+                {...register('password', {
+                  required: 'Password is required',
+                })}
+              />
+              {errors.password && (
+                <p style={styles.error}>{errors.password.message}</p>
+              )}
             </div>
 
-            <div>
-              <button
-                type="submit"
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Log in
-              </button>
-            </div>
+            {error && <p style={styles.error}>{error}</p>}
+
+            <button type="submit" style={styles.button}>
+              Log in
+            </button>
           </form>
 
-          <p className="mt-10 text-center text-sm text-gray-500">
-            Not a member?{' '}
-            <Link
-              to="/signup"
-              className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-            >
-              Create an Account
-            </Link>
-          </p>
+          <div style={styles.footer}>
+            <p>
+              Not a member?{' '}
+              <Link to="/signup" style={styles.link}>
+                Create an account
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </>

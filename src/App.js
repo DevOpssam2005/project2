@@ -176,25 +176,23 @@ function App() {
   const userChecked = useSelector(selectUserChecked);
 
   useEffect(() => {
-    dispatch(checkAuthAsync());
+    // dispatch(checkAuthAsync());
   }, [dispatch]);
 
   useEffect(() => {
     if (user) {
-      dispatch(fetchItemsByUserIdAsync());
+      // dispatch(fetchItemsByUserIdAsync());
       // we can get req.user by token on backend so no need to give in front-end
-      dispatch(fetchLoggedInUserAsync());
+      // dispatch(fetchLoggedInUserAsync());
     }
   }, [dispatch, user]);
 
   return (
     <>
       <div className="App">
-        {userChecked && (
-          <Provider template={AlertTemplate} {...options}>
-            <RouterProvider router={router} />
-          </Provider>
-        )}
+        <Provider template={AlertTemplate} {...options}>
+          <RouterProvider router={router} />
+        </Provider>
         {/* Link must be inside the Provider */}
       </div>
     </>
